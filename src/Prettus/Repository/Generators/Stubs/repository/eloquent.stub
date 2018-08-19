@@ -6,7 +6,6 @@ use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use $REPOSITORY$
 use $MODEL$;
-$USE_VALIDATOR$
 
 /**
  * Class $CLASS$RepositoryEloquent.
@@ -25,8 +24,6 @@ class $CLASS$RepositoryEloquent extends BaseRepository implements $CLASS$Reposit
         return $CLASS$::class;
     }
 
-    $VALIDATOR$
-
     /**
      * Boot up the repository, pushing criteria
      */
@@ -34,5 +31,4 @@ class $CLASS$RepositoryEloquent extends BaseRepository implements $CLASS$Reposit
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-    
 }

@@ -5,6 +5,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Prettus\Repository\Generators\ControllerGenerator;
 use Prettus\Repository\Generators\FileAlreadyExistsException;
+use Prettus\Repository\Generators\ResourceTraitGenerator;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 

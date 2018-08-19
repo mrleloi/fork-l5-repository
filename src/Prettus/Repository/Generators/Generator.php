@@ -3,6 +3,7 @@
 namespace Prettus\Repository\Generators;
 
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 /**
@@ -215,8 +216,8 @@ abstract class Generator
             case ('transformers' === $class):
                 $path = config('repository.generator.paths.transformers', 'Transformers');
                 break;
-            case ('validators' === $class):
-                $path = config('repository.generator.paths.validators', 'Validators');
+            case ('resources_trait' === $class):
+                $path = config('repository.generator.paths.resources_trait', 'Http\Controllers\Trait');
                 break;
             case ('controllers' === $class):
                 $path = config('repository.generator.paths.controllers', 'Http\Controllers');
@@ -286,6 +287,8 @@ abstract class Generator
         if ($this->filesystem->exists($path = $this->getPath()) && !$this->force) {
             throw new FileAlreadyExistsException($path);
         }
+
+        Log::info($path);
         if (!$this->filesystem->isDirectory($dir = dirname($path))) {
             $this->filesystem->makeDirectory($dir, 0777, true, true);
         }

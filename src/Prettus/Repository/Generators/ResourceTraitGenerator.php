@@ -23,7 +23,7 @@ class ResourceTraitGenerator extends Generator
      */
     public function getRootNamespace()
     {
-        return str_replace('/', '\\', $this->getControllerNamespace()  .'\\'. parent::getConfigGeneratorClassPath($this->getPathConfigNode(), true));
+        return str_replace('/', '\\', parent::getRootNamespace() . parent::getConfigGeneratorClassPath($this->getPathConfigNode(), true));
     }
 
     /**
@@ -33,7 +33,7 @@ class ResourceTraitGenerator extends Generator
      */
     public function getPathConfigNode()
     {
-        return 'trait';
+        return 'resources_trait';
     }
 
     /**
@@ -43,7 +43,7 @@ class ResourceTraitGenerator extends Generator
      */
     public function getPath()
     {
-        return $this->getBasePath() . '/' . $this->getControllerNamespace() .'/'. parent::getConfigGeneratorClassPath($this->getPathConfigNode(), true) . '/' . $this->getControllerName() . 'Resource.php';
+        return $this->getBasePath() .'/'. parent::getConfigGeneratorClassPath($this->getPathConfigNode(), true) . '/' . $this->getTraitName() . 'Resource.php';
     }
 
     /**
@@ -54,19 +54,6 @@ class ResourceTraitGenerator extends Generator
     public function getBasePath()
     {
         return config('repository.generator.basePath', app()->path());
-    }
-
-    /**
-     * Gets controller name based on model
-     *
-     * @return string
-     */
-    public function getControllerNamespace()
-    {
-        $controllerGenerator = new ControllerGenerator([
-            'name' => $this->name,
-        ]);
-        return str_replace('/', '\\', $controllerGenerator->getRootNamespace() . '\\' . $controllerGenerator->getName());
     }
 
     /**
