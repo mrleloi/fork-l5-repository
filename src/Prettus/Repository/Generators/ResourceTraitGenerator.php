@@ -6,7 +6,7 @@ namespace Prettus\Repository\Generators;
  * @package Prettus\Repository\Generators
  * @author Anderson Andrade <contato@andersonandra.de>
  */
-class ControllerGenerator extends Generator
+class ResourceTraitGenerator extends Generator
 {
 
     /**
@@ -14,7 +14,7 @@ class ControllerGenerator extends Generator
      *
      * @var string
      */
-    protected $stub = 'controller/controller';
+    protected $stub = 'controller/trait/resource';
 
     /**
      * Get root namespace.
@@ -23,7 +23,7 @@ class ControllerGenerator extends Generator
      */
     public function getRootNamespace()
     {
-        return str_replace('/', '\\', parent::getRootNamespace() . parent::getConfigGeneratorClassPath($this->getPathConfigNode()));
+        return str_replace('/', '\\', $this->getControllerNamespace()  .'\\'. parent::getConfigGeneratorClassPath($this->getPathConfigNode(), true));
     }
 
     /**
@@ -33,7 +33,7 @@ class ControllerGenerator extends Generator
      */
     public function getPathConfigNode()
     {
-        return 'controllers';
+        return 'trait';
     }
 
     /**
@@ -43,7 +43,7 @@ class ControllerGenerator extends Generator
      */
     public function getPath()
     {
-        return $this->getBasePath() . '/' . parent::getConfigGeneratorClassPath($this->getPathConfigNode(), true) . '/' . $this->getControllerName() . 'Controller.php';
+        return $this->getBasePath() . '/' . $this->getControllerNamespace() .'/'. parent::getConfigGeneratorClassPath($this->getPathConfigNode(), true) . '/' . $this->getControllerName() . 'Resource.php';
     }
 
     /**
@@ -61,10 +61,12 @@ class ControllerGenerator extends Generator
      *
      * @return string
      */
-    public function getControllerName()
+    public function getControllerNamespace()
     {
-
-        return ucfirst($this->getPluralName());
+        $controllerGenerator = new ControllerGenerator([
+            'name' => $this->name,
+        ]);
+        return str_replace('/', '\\', $controllerGenerator->getRootNamespace() . '\\' . $controllerGenerator->getName());
     }
 
     /**
@@ -87,12 +89,17 @@ class ControllerGenerator extends Generator
     {
 
         return array_merge(parent::getReplacements(), [
-            'controller' => $this->getControllerName(),
+            'trait' => $this->getTraitName(),
             'plural'     => $this->getPluralName(),
             'singular'   => $this->getSingularName(),
             'repository' => $this->getRepository(),
             'appname'    => $this->getAppNamespace(),
         ]);
+    }
+
+    public function getTraitName()
+    {
+        return ucfirst($this->getPluralName());
     }
 
     /**

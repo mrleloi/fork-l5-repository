@@ -58,21 +58,7 @@ class EntityCommand extends Command
             ]);
         }
 
-        $validator = $this->option('validator');
-        if (is_null($validator) && $this->confirm('Would you like to create a Validator? [y|N]')) {
-            $validator = 'yes';
-        }
-
-        if ($validator == 'yes') {
-            $this->call('make:validator', [
-                'name'    => $this->argument('name'),
-                '--rules' => $this->option('rules'),
-                '--force' => $this->option('force'),
-            ]);
-        }
-
         if ($this->confirm('Would you like to create a Controller? [y|N]')) {
-
             $resource_args = [
                 'name'    => $this->argument('name')
             ];
@@ -86,7 +72,6 @@ class EntityCommand extends Command
             'name'        => $this->argument('name'),
             '--fillable'  => $this->option('fillable'),
             '--rules'     => $this->option('rules'),
-            '--validator' => $validator,
             '--force'     => $this->option('force')
         ]);
 
@@ -135,13 +120,6 @@ class EntityCommand extends Command
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'The rules of validation attributes.',
-                null
-            ],
-            [
-                'validator',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'Adds validator reference to the repository.',
                 null
             ],
             [

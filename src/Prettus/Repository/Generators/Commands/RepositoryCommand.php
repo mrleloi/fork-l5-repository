@@ -75,6 +75,15 @@ class RepositoryCommand extends Command
             $this->generators->push($migrationGenerator);
         }
 
+        $this->call('make:factory', [
+            'name'    => $this->argument('name'),
+            '-m' => $this->argument('name')
+        ]);
+
+        $this->call('make:seeder', [
+            'name'    => $this->argument('name')
+        ]);
+
         $modelGenerator = new ModelGenerator([
             'name'     => $this->argument('name'),
             'fillable' => $this->option('fillable'),
@@ -104,7 +113,6 @@ class RepositoryCommand extends Command
             (new RepositoryEloquentGenerator([
                 'name'      => $this->argument('name'),
                 'rules'     => $this->option('rules'),
-                'validator' => $this->option('validator'),
                 'force'     => $this->option('force'),
                 'model'     => $model
             ]))->run();
@@ -155,13 +163,6 @@ class RepositoryCommand extends Command
                 null,
                 InputOption::VALUE_OPTIONAL,
                 'The rules of validation attributes.',
-                null
-            ],
-            [
-                'validator',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'Adds validator reference to the repository.',
                 null
             ],
             [

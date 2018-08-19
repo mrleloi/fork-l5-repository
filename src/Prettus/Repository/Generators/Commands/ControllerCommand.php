@@ -79,6 +79,11 @@ class ControllerCommand extends Command
                 'force' => $this->option('force'),
             ]))->run();
 
+            (new ResourceTraitGenerator([
+                'name' => $this->argument('name'),
+                'force' => $this->option('force'),
+            ]))->run();
+
             $this->info($this->type . ' created successfully.');
 
         } catch (FileAlreadyExistsException $e) {
