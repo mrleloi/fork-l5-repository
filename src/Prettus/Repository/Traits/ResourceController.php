@@ -14,7 +14,7 @@ trait ResourceController
 
         $response = [
             'message' => 'List results.',
-            'data'    => $data->toArray(),
+            'data'    => $data,
         ];
 
 //        wantsJson() <=> headers = { "Accept":"application/json" }
@@ -52,7 +52,7 @@ trait ResourceController
 
             $response = [
                 'message' => 'Created successful.',
-                'data'    => $data->toArray(),
+                'data'    => $data,
             ];
 
             if ($request->wantsJson()) {
@@ -88,7 +88,7 @@ trait ResourceController
 
             $response = [
                 'message' => 'Updated successful.',
-                'data'    => $data->toArray(),
+                'data'    => $data,
             ];
 
             if ($request->wantsJson()) {
