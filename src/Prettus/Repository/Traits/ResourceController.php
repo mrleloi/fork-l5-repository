@@ -25,11 +25,26 @@ trait ResourceController
         return response()->json($response, 200, [], JSON_PRETTY_PRINT);
     }
 
-    protected function store(Request $request)
+    protected function show($id)
+    {
+        $data = $this->repository->find($id);
+
+        $response = [
+            'message' => 'Show result.',
+            'data' => $data,
+        ];
+
+        if (request()->wantsJson()) {
+            return response()->json($response);
+        }
+
+        return response()->json($response, 200, [], JSON_PRETTY_PRINT);
+    }
+
+    protected function doStoreWith($request)
     {
         try {
-            if (isset($this->storeRequest)) {
-                $request = $this->storeRequest;
+            if (method_exists($request, 'rules')) {
                 $request->validated();
             }
 
@@ -57,27 +72,15 @@ trait ResourceController
         }
     }
 
-    protected function show($id)
+    protected function store(Request $request)
     {
-        $data = $this->repository->find($id);
-
-        $response = [
-            'message' => 'Show result.',
-            'data' => $data,
-        ];
-
-        if (request()->wantsJson()) {
-            return response()->json($response);
-        }
-
-        return response()->json($response, 200, [], JSON_PRETTY_PRINT);
+        $this->doStoreWith($request);
     }
 
-    protected function update(Request $request, $id)
+    protected function doUpdateWith($request, $id)
     {
         try {
-            if (isset($this->storeRequest)) {
-                $request = $this->storeRequest;
+            if (method_exists($request, 'rules')) {
                 $request->validated();
             }
 
@@ -103,6 +106,11 @@ trait ResourceController
 
             return redirect()->back()->withErrors($e->getMessage())->withInput();
         }
+    }
+
+    protected function update(Request $request)
+    {
+        $this->doUpdateWith($request);
     }
 
     protected function destroy($id)

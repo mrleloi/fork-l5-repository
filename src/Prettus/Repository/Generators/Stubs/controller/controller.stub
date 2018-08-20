@@ -15,6 +15,9 @@ $REPOSITORY$
  */
 class $CONTROLLER$Controller extends Controller
 {
+    /**
+     * add default CRUD API Trait
+     */
     use ResourceController;
 
     /**
@@ -27,11 +30,30 @@ class $CONTROLLER$Controller extends Controller
      *
      * @param $CLASS$Repository $repository
      */
-    public function __construct($CLASS$Repository $repository, $CLASS$StoreRequest $storeRequest, $CLASS$UpdateRequest $updateRequest)
+    public function __construct($CLASS$Repository $repository)
     {
         $this->repository = $repository;
+    }
 
-        $this->storeRequest = $storeRequest;
-        $this->updateRequest = $updateRequest;
+    /**
+     * Apply $CLASS$StoreRequest to default store function
+     * This over-ride function can be remove, and no request will be applied
+     *
+     * @param $CLASS$StoreRequest $storeRequest
+     */
+    public function store($CLASS$StoreRequest $storeRequest)
+    {
+        return $this->doStoreWith($storeRequest);
+    }
+
+    /**
+     * Apply $CLASS$UpdateRequest to default update function
+     * This over-ride function can be remove, and no request will be applied
+     *
+     * @param $CLASS$UpdateRequest $updateRequest
+     */
+    public function update($CLASS$UpdateRequest $updateRequest)
+    {
+        return $this->doUpdateWith($updateRequest);;
     }
 }
