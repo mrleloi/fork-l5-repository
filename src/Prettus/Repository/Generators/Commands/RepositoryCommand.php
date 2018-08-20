@@ -65,37 +65,39 @@ class RepositoryCommand extends Command
     {
         $this->generators = new Collection();
 
-        $migrationGenerator = new MigrationGenerator([
-            'name'   => 'create_' . snake_case(str_plural($this->argument('name'))) . '_table',
-            'fields' => $this->option('fillable'),
-            'force'  => $this->option('force'),
-        ]);
-
-        if (!$this->option('skip-migration')) {
-            $this->generators->push($migrationGenerator);
-        }
-
-        $this->call('make:factory', [
-            'name'    => $this->argument('name'),
-            '-m' => $this->argument('name')
-        ]);
-
-        $this->call('make:seeder', [
-            'name'    => $this->argument('name')
-        ]);
-
         $modelGenerator = new ModelGenerator([
             'name'     => $this->argument('name'),
             'fillable' => $this->option('fillable'),
             'force'    => $this->option('force')
         ]);
 
-        if (!$this->option('skip-model')) {
+        $modelName = $modelGenerator->getName();
+
+        if ($this->confirm('Would you like to create a Model? [y|N]')) {
             $this->generators->push($modelGenerator);
         }
 
+        if ($this->confirm('Would you like to create a Migration? [y|N]')) {
+            $migrationGenerator = new MigrationGenerator([
+                'name' => 'create_' . snake_case(str_plural($this->argument('name'))) . '_table',
+                'fields' => $this->option('fillable'),
+                'force' => $this->option('force'),
+            ]);
+
+            $this->generators->push($migrationGenerator);
+
+            $this->call('make:factory', [
+                'name' => $modelName . 'Factory',
+                '-m' => 'Entities/' . $modelName,
+            ]);
+
+            $this->call('make:seeder', [
+                'name' => $modelName . 'Seeder',
+            ]);
+        }
+
         $this->generators->push(new RepositoryInterfaceGenerator([
-            'name'  => $this->argument('name'),
+            'name'  => $modelName,
             'force' => $this->option('force'),
         ]));
 
@@ -111,7 +113,7 @@ class RepositoryCommand extends Command
 
         try {
             (new RepositoryEloquentGenerator([
-                'name'      => $this->argument('name'),
+                'name'      => $modelName,
                 'rules'     => $this->option('rules'),
                 'force'     => $this->option('force'),
                 'model'     => $model
@@ -171,20 +173,6 @@ class RepositoryCommand extends Command
                 InputOption::VALUE_NONE,
                 'Force the creation if file already exists.',
                 null
-            ],
-            [
-                'skip-migration',
-                null,
-                InputOption::VALUE_NONE,
-                'Skip the creation of a migration file.',
-                null,
-            ],
-            [
-                'skip-model',
-                null,
-                InputOption::VALUE_NONE,
-                'Skip the creation of a model.',
-                null,
             ],
         ];
     }

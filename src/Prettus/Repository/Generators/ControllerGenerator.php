@@ -43,7 +43,7 @@ class ControllerGenerator extends Generator
      */
     public function getPath()
     {
-        return $this->getBasePath() . '/' . parent::getConfigGeneratorClassPath($this->getPathConfigNode(), true) . '/' . $this->getControllerName() . 'Controller.php';
+        return $this->getBasePath() . '/' . parent::getConfigGeneratorClassPath($this->getPathConfigNode(), true) . '/' . $this->getName() . 'Controller.php';
     }
 
     /**
@@ -57,52 +57,17 @@ class ControllerGenerator extends Generator
     }
 
     /**
-     * Gets controller name based on model
-     *
-     * @return string
-     */
-    public function getControllerName()
-    {
-
-        return ucfirst($this->getPluralName());
-    }
-
-    /**
-     * Gets plural name based on model
-     *
-     * @return string
-     */
-    public function getPluralName()
-    {
-
-        return str_plural(lcfirst(ucwords($this->getClass())));
-    }
-
-    /**
      * Get array replacements.
      *
      * @return array
      */
     public function getReplacements()
     {
-
         return array_merge(parent::getReplacements(), [
-            'controller' => $this->getControllerName(),
-            'plural'     => $this->getPluralName(),
-            'singular'   => $this->getSingularName(),
+            'controller' => $this->getName(),
             'repository' => $this->getRepository(),
             'appname'    => $this->getAppNamespace(),
         ]);
-    }
-
-    /**
-     * Gets singular name based on model
-     *
-     * @return string
-     */
-    public function getSingularName()
-    {
-        return str_singular(lcfirst(ucwords($this->getClass())));
     }
 
     /**

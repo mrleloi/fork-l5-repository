@@ -60,7 +60,8 @@ class EntityCommand extends Command
 
         if ($this->confirm('Would you like to create a Controller? [y|N]')) {
             $resource_args = [
-                'name'    => $this->argument('name')
+                'name'    => $this->argument('name'),
+                '--force' => $this->option('force'),
             ];
 
             // Generate a controller resource

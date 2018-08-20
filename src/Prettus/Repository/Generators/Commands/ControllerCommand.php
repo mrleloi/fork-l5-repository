@@ -67,7 +67,7 @@ class ControllerCommand extends Command
         try {
             // Generate create request for controller
             $this->call('make:request', [
-                'name' => $this->argument('name') . 'CreateRequest'
+                'name' => $this->argument('name') . 'StoreRequest'
             ]);
 
             // Generate update request for controller
@@ -76,11 +76,6 @@ class ControllerCommand extends Command
             ]);
 
             (new ControllerGenerator([
-                'name' => $this->argument('name'),
-                'force' => $this->option('force'),
-            ]))->run();
-
-            (new ResourceTraitGenerator([
                 'name' => $this->argument('name'),
                 'force' => $this->option('force'),
             ]))->run();

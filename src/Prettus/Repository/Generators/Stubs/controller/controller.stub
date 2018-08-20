@@ -3,7 +3,9 @@
 $NAMESPACE$
 
 use Illuminate\Http\Request;
-use Trait\$CLASS$Resource;
+use App\Http\Requests\$CLASS$StoreRequest;
+use App\Http\Requests\$CLASS$UpdateRequest;
+use Prettus\Repository\Traits\ResourceController;
 $REPOSITORY$
 
 /**
@@ -13,7 +15,8 @@ $REPOSITORY$
  */
 class $CONTROLLER$Controller extends Controller
 {
-    use $CLASS$Resource;
+    use ResourceController;
+
     /**
      * @var $CLASS$Repository
      */
@@ -24,8 +27,11 @@ class $CONTROLLER$Controller extends Controller
      *
      * @param $CLASS$Repository $repository
      */
-    public function __construct($CLASS$Repository $repository)
+    public function __construct($CLASS$Repository $repository, $CLASS$StoreRequest $storeRequest, $CLASS$UpdateRequest $updateRequest)
     {
         $this->repository = $repository;
+
+        $this->storeRequest = $storeRequest;
+        $this->updateRequest = $updateRequest;
     }
 }

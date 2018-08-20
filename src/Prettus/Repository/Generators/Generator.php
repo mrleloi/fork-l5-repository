@@ -284,11 +284,12 @@ abstract class Generator
     public function run()
     {
         $this->setUp();
+
+        Log::info($this->force);
         if ($this->filesystem->exists($path = $this->getPath()) && !$this->force) {
             throw new FileAlreadyExistsException($path);
         }
 
-        Log::info($path);
         if (!$this->filesystem->isDirectory($dir = dirname($path))) {
             $this->filesystem->makeDirectory($dir, 0777, true, true);
         }
